@@ -10,7 +10,15 @@ from PIL import Image, ImageTk
 from tkinter import filedialog
 
 
+    #vsb = ttk.Scrollbar(frame2,orient="vertical",command=tree.yview)
+    #tree.configure(yscrollcommand=vsb.set)
+    #vsb.pack(side='right', fill='y')
 
+          
+    #for col in lb_header:
+ #    tree.heading(col, text=col.title())
+#for item in views:
+#    tree.insert('', 'end', values=[item[0],item[1],item[2]])
 
 
 
@@ -122,8 +130,8 @@ def uploadImage():
 
 global tree
 
-def update():
-    global frame2
+def search_order_template():
+    global frame2,id_e,cus_n,cus_t,cus_p,cus_c,cus_s,cus_sh,cus_w,cus_bl,cus_ne
 
     try:
         frame3.place_forget()
@@ -149,29 +157,109 @@ def update():
 
     finally:
         
-        frame2=Frame(root,width=500,height=500,borderwidth=5,relief=RAISED)
+        frame2=Frame(root,width=1000,height=500,borderwidth=5,relief=RAISED)
         frame2.place(x=0,y=100)
-        lb_header = ['product name', 'Original price','Stock']
+#==============================Label==============================================
+        lb=Label(frame2,text='Search Order',font='arail 20 bold',bg='steelblue')
+        lb.place(x=250,y=0)
+
+        lb_1=Label(frame2,text='Enter ID',font='arail 18 bold')
+        lb_1.place(x=0,y=50)
+
+        cus_n=Label(frame2,text='Vender Name',font="arail 18 bold")
+        cus_n.place(x=500,y=0)
+
         
+
+        cus_n=Label(frame2,text='Type',font="arail 18 bold")
+        cus_n.place(x=500,y=40)
+
+        cus_n=Label(frame2,text='Phone_no',font="arail 18 bold")
+        cus_n.place(x=500,y=80)
+
+        cus_n=Label(frame2,text='chest',font="arail 18 bold")
+        cus_n.place(x=500,y=120)
+
+        cus_n=Label(frame2,text='sleeves',font="arail 18 bold")
+        cus_n.place(x=500,y=160)
+
+        cus_n=Label(frame2,text='shoulder',font="arail 18 bold")
+        cus_n.place(x=500,y=200)
+
+        cus_n=Label(frame2,text='waist',font="arail 18 bold")
+        cus_n.place(x=500,y=240)
+
+        cus_n=Label(frame2,text='back length',font="arail 18 bold")
+        cus_n.place(x=500,y=280)
+
+        cus_n=Label(frame2,text='neck',font="arail 18 bold")
+        cus_n.place(x=500,y=320)
+
+
+#===============================================================================
+
+        cus_n=Label(frame2,font="arail 18 bold")
+        cus_n.place(x=700,y=0)
+
+        cus_t=Label(frame2,font="arail 18 bold")
+        cus_t.place(x=700,y=40)
+
+        cus_p=Label(frame2,font="arail 18 bold")
+        cus_p.place(x=700,y=80)
+
+        cus_c=Label(frame2,font="arail 18 bold")
+        cus_c.place(x=700,y=120)
+
+        cus_s=Label(frame2,font="arail 18 bold")
+        cus_s.place(x=700,y=160)
+
+        cus_sh=Label(frame2,font="arail 18 bold")
+        cus_sh.place(x=700,y=200)
+
+        cus_w=Label(frame2,font="arail 18 bold")
+        cus_w.place(x=700,y=240)
+
+        cus_bl=Label(frame2,font="arail 18 bold")
+        cus_bl.place(x=700,y=280)
+
+        cus_ne=Label(frame2,font="arail 18 bold")
+        cus_ne.place(x=700,y=320)
+#================================Entry==============================================
+
+        id_e=Entry(frame2,font='arail 18 bold',bg='steelblue')
+        id_e.place(x=100,y=50)
+
+#=============================Button==================================================
+        Button(frame2,text='search',bg='orange',command=search_order).place(x=0,y=100)
+        
+
+
+def search_order():
+    get_id=id_e.get()
+
+    if get_id=='':
+        messagebox.showwarning("Warning","sorry no input")
+
+    else:
         with connecter:
-            c.execute("""SELECT * FROM product""")
-            views=c.fetchall()
+                c.execute("""SELECT * FROM order_detail WHERE id={}""".format(get_id))
+                get=c.fetchone()
+                #messagebox.showinfo("congrat","You name is {}".format(get[0]))
 
-        tree = ttk.Treeview(frame2,columns=lb_header, show="headings",selectmode='browse')
-        tree.pack(side='left')
-        
-
-
-        
-        vsb = ttk.Scrollbar(frame2,orient="vertical",command=tree.yview)
-        tree.configure(yscrollcommand=vsb.set)
-        vsb.pack(side='right', fill='y')
-
-          
-        for col in lb_header:
-            tree.heading(col, text=col.title())
-        for item in views:
-            tree.insert('', 'end', values=[item[0],item[1],item[2]])
+                print('inputs are {}'.format(get))
+                if get==None:
+                    messagebox.showwarning("Warning","sorry no input")
+                else:
+                    
+                    cus_n.configure(text=get[0])
+                    cus_t.configure(text=get[2])
+                    cus_p.configure(text=get[3])
+                    cus_c.configure(text=get[4])
+                    cus_s.configure(text=get[5])
+                    cus_sh.configure(text=get[6])
+                    cus_w.configure(text=get[7])
+                    cus_bl.configure(text=get[8])
+                    cus_ne.configure(text=get[9])
 
 
 def create_order_template():
@@ -295,36 +383,60 @@ def create_customer():
         messagebox.showinfo("congrat","You added customer")
 
 
-image_list=[]
+
 delta=0
 
 def load_image():
     global Deathwing2
     global delta
-    
+    get_img=img_e.get()
+    #print(get_img)
+    image_list=[]  
+     
     with connecter:
-        c.execute("""SELECT * FROM product""")
+        c.execute("""SELECT * FROM product WHERE name='{}'""".format(get_img))
         views=c.fetchall()
         for i in views:
             a=i[2]
             image_list.append(a)
+
+        
+        
+           
         mylist = list(dict.fromkeys(image_list))
         
-        if len(image_list) != delta:
-            img =Image.open(image_list[delta])
+        
+
+        if delta > len(mylist):
+            delta=0
+
+        if delta == -1:
+            delta=delta+1
+            print(len(mylist))
+            print(delta)
+            
+            
+        if len(mylist) != delta:
+            img =Image.open(mylist[delta])
             img = img.resize((500, 500), Image.ANTIALIAS)
             Deathwing2=ImageTk.PhotoImage(img)
-            #label(image=Deathwing2)
+                #label(image=Deathwing2)
             label =Label(root, image = Deathwing2)
             label.place(x=100,y=200)
-            
+
+            back_button=Button(root, text='Previous picture', command=back)
+            back_button.place(x=100,y=710)
+            forward_button=Button(root, text='Next picture', command=front)
+            forward_button.place(x=200,y=710)
+                
+                
         else:
             print('lol')
 
 def show_image():
     global l
     global delta
-    global current, image_list,label
+    global current, image_list,label,img_e
     
     try:
         l.place_forget()
@@ -344,15 +456,18 @@ def show_image():
     except NameError:
         print(NameError)
     finally:
+
+        img_e=Entry(root,font='arail 18 bold')
+        img_e.place(x=0,y=100)
+        
+        back_button=Button(root, text='show picture', command=load_image)
+        back_button.place(x=0,y=200)
        
         
        
-        load_image()
+        
 
-        back_button=Button(root, text='Previous picture', command=back)
-        back_button.place(x=100,y=710)
-        forward_button=Button(root, text='Next picture', command=front)
-        forward_button.place(x=200,y=710)
+
     
 def back():
     global delta
@@ -377,7 +492,7 @@ def front():
 btn2=Button(frame,text='Upload Image',font='arail 18 bold',command=uploadImage_template,bg='orange')
 btn2.place(x=0,y=0)
 
-btn3=Button(frame,text='view product',font='arail 18 bold',command=update,bg='orange')
+btn3=Button(frame,text='Search Order',font='arail 18 bold',command=search_order_template,bg='orange')
 btn3.place(x=200,y=0)
 
 btn5=Button(frame,text='view image',font='arail 18 bold',command=show_image,bg='orange')
