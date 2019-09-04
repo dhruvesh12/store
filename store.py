@@ -26,6 +26,42 @@ from tkinter import filedialog
 connecter=sqlite3.connect("store.db")
 c = connecter.cursor()
 
+try:
+    #c.execute("ALTER TABLE product ADD COLUMN namees varchar(32)")
+    c.execute("""CREATE TABLE `product` (
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`name`	TEXT,
+	`image`	TEXT
+    );""")
+
+    c.execute("""CREATE TABLE `order_detail` (
+	`cus_name`	TEXT,
+	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`type`	TEXT,
+	`phone_no`	INTEGER,
+	`chest`	INTEGER,
+	`sleeve`	INTEGER,
+	`shoulder`	INTEGER,
+	`waist`	INTEGER,
+	`length`	INTEGER,
+	`neck`	INTEGER,
+	`price`	INTEGER,
+	`center_point`	INTEGER,
+	`height`	INTEGER,
+	`hip`	INTEGER,
+	`inseam`	INTEGER,
+	`bottom`	INTEGER,
+	`collar`	INTEGER,
+	`inside`	INTEGER,
+	`ankle`	INTEGER
+    );""")
+
+    
+except Exception as e:
+    print(e)
+
+    
+
 
 root = Tk()
 frame=Frame(root,width=10000,height=100,borderwidth=5,relief=RAISED)
@@ -254,7 +290,7 @@ def search_order():
 
     else:
         with connecter:
-                c.execute("""SELECT * FROM order_detail WHERE id={} OR cus_name='{}'""".format(get_id,get_name))
+                c.execute("""SELECT * FROM order_detail WHERE id='{}' OR cus_name='{}'""".format(get_id,get_name))
                 get=c.fetchone()
                 #messagebox.showinfo("congrat","You name is {}".format(get[0]))
 
@@ -808,10 +844,12 @@ def front():
         
 
         
-
+symbol = {'alpha':945, 'beta':946, 'gamma': 947, 'delta': 948, 'epsilon':949}
     
-
 ###############main window ######################
+btn8=Button(frame, text=u'\u26A0',font='arail 18 bold',bg='red',command=root.destroy)
+btn8.place(x=1800,y=0)
+#btn8.configure(image=photo1)
 
 
 btn2=Button(frame,text='Upload Image',font='arail 18 bold',command=uploadImage_template,bg='orange')
@@ -828,7 +866,7 @@ btn6.place(x=600,y=0)
 
 
 ######################################################################
-#root.overrideredirect(True)
+root.overrideredirect(True)
 root.title('store')
 
 root.configure(background='steelblue')
